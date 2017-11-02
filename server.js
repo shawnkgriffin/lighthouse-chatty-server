@@ -84,9 +84,14 @@ function broadcastNumberOfUsers() {
 
 wss.on("connection", socket => {
   broadcastNumberOfUsers();
+  
   socket.on("message", data => {
     console.log("message", data);
     const message = buildMessage(data);
     broadcast(JSON.stringify(message));
+  });
+  
+  socket.on("close", data => {
+    broadcastNumberOfUsers()
   });
 });
