@@ -39,12 +39,13 @@ function broadcast(data) {
 * @returns {object} Users = array of Users
 */
 
-function buildMessage(data) {
+function buildMessage(data, color) {
   // parse the incoming message as it's a json string.
   const message = JSON.parse(data);
 
   //set the outgoing message with a UUID
   message.id = uuidv4();
+  message.color = color;
 
   //depending on the message, we will change the outgoing message type.
   switch (message.type) {
@@ -68,7 +69,6 @@ function buildMessage(data) {
 * @function broadcastNumberOfUsers()
 */
 function broadcastNumberOfUsers() {
-
   const message = {
     id: uuidv4(),
     type: "numberOfUsers",
@@ -78,20 +78,40 @@ function broadcastNumberOfUsers() {
 }
 
 /**
+* Random color generator 
+* Get Users returns an array of all the users in system.
+* https://stackoverflow.com/questions/1152024/best-way-to-generate-a-random-color-in-javascript/14187677#14187677
+* @returns {string} Valid color
+*/
+function rainbow() {
+  // 30 random hues with step of 12 degrees
+  var hue = Math.floor(Math.random() * 30) * 12;
+
+  return Color({
+    hue: hue,
+    saturation: 0.9,
+    lightness: 0.6,
+    alpha: 1
+  }).toHexString();
+}
+
+/**
 * Main loop on getting events. 
 * Get Users returns an array of all the users in system.
 */
 
 wss.on("connection", socket => {
+  const color = "#" + parseInt(Math.random() * 0xffffff).toString(16);
+
   broadcastNumberOfUsers();
-  
+  console.log("connection", color);
   socket.on("message", data => {
-    console.log("message", data);
-    const message = buildMessage(data);
+    console.log("message", data, color);
+    const message = buildMessage(data, color);
     broadcast(JSON.stringify(message));
   });
-  
+
   socket.on("close", data => {
-    broadcastNumberOfUsers()
+    broadcastNumberOfUsers();
   });
 });
