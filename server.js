@@ -1,4 +1,4 @@
-const uuidv4 = require("uuid/v4");
+const uuidv4 = require("uuid-v4");
 const express = require("express");
 const http = require("http");
 const ws = require("ws");

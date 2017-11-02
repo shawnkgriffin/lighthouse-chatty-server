@@ -19,5 +19,6 @@ The functional requirements, and their status can be found [here](https://github
 
 ## Dependencies
 
-- React
-- React-dom
+- uuid-v4
+- express
+- ws

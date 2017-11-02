@@ -9,5 +9,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "uuid-v4": "^0.1.0",
+    "ws": "^3.2.0"
+  }
 }
