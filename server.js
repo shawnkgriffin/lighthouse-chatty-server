@@ -24,7 +24,6 @@ const wss = new ws.Server({ server: server });
 function broadcast(data) {
   wss.clients.forEach(client => {
     if (client.readyState === ws.OPEN) {
-      console.log("broadcast", data);
       client.send(data);
     }
   });
@@ -60,7 +59,6 @@ function buildMessage(data, color) {
       throw new Error("Unknown event type " + message.type);
   }
 
-  console.log("buildMessage", message);
   return message;
 }
 /**
@@ -104,9 +102,7 @@ wss.on("connection", socket => {
   const color = "#" + parseInt(Math.random() * 0xffffff).toString(16);
 
   broadcastNumberOfUsers();
-  console.log("connection", color);
   socket.on("message", data => {
-    console.log("message", data, color);
     const message = buildMessage(data, color);
     broadcast(JSON.stringify(message));
   });
